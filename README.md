@@ -1,81 +1,97 @@
-#   ALX Project Nexus 
+# Online Poll System Backend
 
-##         Project Objective
-
-This repository documents key backend engineering learnings from the ALX ProDev Backend Engineering Program. It highlights major concepts, technologies, tools, challenges, and best practices encountered throughout the course.
+This project is a backend system for managing online polls. It supports poll creation, real-time voting, and result computation. Designed using Django and PostgreSQL, it includes a Swagger-powered API documentation interface.
 
 ---
 
-##          Key Technologies Learned
+## Features
 
-* **Python** - Core programming logic, async support
-* **Django & Django REST Framework** - API development, authentication, permissions
-* **GraphQL** - Flexible query APIs using `graphene-django`
-* **Docker** - Containerization for development and deployment
-* **CI/CD** - Automation with GitHub Actions, DockerHub
-* **Celery & RabbitMQ** - Background tasks and message queues
-
----
-
-##   Core Backend Concepts
-
-* **RESTful API Design**: CRUD operations, status codes, views, serializers, routers
-* **GraphQL APIs**: Queries, mutations, schemas, filters
-* **Asynchronous Programming**: Using `async` & `await`, and Celery for background tasks
-* **Database Design**: Modeling with Django ORM, migrations, relationships
-* **Caching Strategies**: Redis, query optimization
-* **Authentication & Authorization**: JWT, session-based, role-based access control
-* **System Design Basics**: Scalability, microservices thinking, API gateways
+* Create polls with multiple choices
+* Set expiration for each poll
+* Vote once per user per poll
+* Real-time vote count and result computation
+* Swagger UI for API documentation at `/api/docs`
 
 ---
 
-##  Real-World Challenges Faced
+## Tech Stack
 
-* **Challenge**: Handling bulk inserts from CSV with validations
-  **Solution**: Used `Django management commands` + custom serializers
-
-* **Challenge**: Protecting endpoints for specific user roles
-  **Solution**: Created custom `permissions.py` and added logic to `viewsets`
-
-* **Challenge**: Running background notifications on message creation
-  **Solution**: Used Django signals + Celery tasks triggered on `post_save`
+* **Backend:** Django (DRF)
+* **Database:** PostgreSQL
+* **Documentation:** Swagger (drf-yasg)
 
 ---
 
-## Best Practices Learned
+## Project Structure
+poll_system/
+├── api/ # DRF views, serializers, urls
+├── polls/ # Models and business logic
+├── manage.py
+├── requirements.txt
+└── README.md
 
-* Use of `serializers.py` to validate and handle complex nested data
-* Modular app structure (`models`, `views`, `urls`, `permissions`)
-* Writing unit tests for API endpoints using Django’s `TestCase`
-* Secure environment variables with `.env` and `python-decouple`
-* Proper logging and error handling with `logging` module
+Getting Started
 
----
+Getting Started
 
-## Collaboration Highlights
+1. **Clone the repository**
+```bash
+git clone https://github.com/Tonnyderrick/poll-system-backend.git
+cd poll-system-backend
 
-* Paired with frontend learners to integrate our REST & GraphQL APIs
-* Exposed endpoints for:
+##Create and activate a virtual environment
 
-  * `/api/products/`
-  * `/graphql`
-  * `/api/orders/`
-* Shared API documentation via Swagger UI and Postman collections
+bash
+python -m venv venv
+source venv/bin/activate
 
----
+##Install dependencies
 
-## Personal Takeaways
+bash
+pip install -r requirements.txt
 
-* Developed deep understanding of how real-world backend systems function
-* Improved communication and collaboration through Discord , GitHub and even on whatsapp groups 
-* Gained confidence building APIs, debugging, and deploying to cloud services
 
----
+##Configure PostgreSQL
 
-##  Links
+Update your settings.py with your PostgreSQL credentials:
 
-* **Backend Repo**: https://github.com/Tonnyderrick/alx-project-nexus
-* **Hosted App**: \[Render/railway/vercel/heroku link if hosted]
-* **Postman Collection**: \[Link to exported JSON if any]
+python
 
----
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'poll_db',
+        'USER': 'postgres',
+        'PASSWORD': 'your_password',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+
+##Run migrations and start the server
+
+bash
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+
+ ##API Endpoints
+Method	Endpoint	Description
+POST	/api/polls/	Create a new poll
+GET	/api/polls/	List all polls
+POST	/api/polls/<id>/vote/	Cast a vote
+GET	/api/polls/<id>/results/	View poll results
+
+Full Swagger Docs available at: /api/docs
+
+##Future Improvements
+Add user authentication
+
+Poll result visualization (charts)
+
+Limit poll access to certain users/groups
+
+Author
+Built by Tonny DERICK
+GitHub: @Tonnyderrick
