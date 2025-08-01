@@ -1,21 +1,21 @@
-from pathlib import Path
 import os
-import dj_database_url  # Ensure this is in requirements.txt
+from pathlib import Path
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ✅ Use environment variables for secret key and debug mode
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "your-default-secret-key")
+# SECRET KEY & DEBUG
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-default-secret")
 DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
-# ✅ Correct domain for Render + local dev
+# Hosts: include your Render app URL + local dev
 ALLOWED_HOSTS = [
     'alx-project-nexus-heao.onrender.com',
     'localhost',
     '127.0.0.1'
 ]
 
-# ✅ Installed apps
+# Applications
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,18 +24,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Third-party apps
     'rest_framework',
     'drf_yasg',
-
-    # Your Django apps
     'polls',
 ]
 
-# ✅ Middleware
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # For static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files on Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -64,16 +61,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'poll_backend.wsgi.application'
 
-# ✅ Database
+# ✅ DATABASE (local + Render PostgreSQL support)
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://postgres:Tonny@localhost:5432/poll_db',  # fallback for local
+        default='postgres://postgres:Tonny@localhost:5432/poll_db',
         conn_max_age=600,
-        ssl_require=not DEBUG  # use SSL in production only
+        ssl_require=not DEBUG  # Require SSL only on Render
     )
 }
 
-# ✅ Password validators
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -81,16 +78,17 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# ✅ Time and language settings
+# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
+USE_L10N = True
 USE_TZ = True
 
-# ✅ Static files (Render will look here)
+# ✅ STATIC FILES
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ✅ Default primary key field type
+# Default primary key field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
