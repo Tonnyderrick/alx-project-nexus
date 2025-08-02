@@ -5,6 +5,7 @@ class OptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Option
         fields = ['id', 'text', 'votes']
+        read_only_fields = ['votes']
 
 class PollSerializer(serializers.ModelSerializer):
     options = OptionSerializer(many=True)
@@ -12,6 +13,7 @@ class PollSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poll
         fields = ['id', 'question', 'created_at', 'expires_at', 'options']
+        read_only_fields = ['id', 'created_at']
 
     def create(self, validated_data):
         options_data = validated_data.pop('options')
