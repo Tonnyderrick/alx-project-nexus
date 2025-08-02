@@ -12,3 +12,10 @@ class PollSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poll
         fields = ['id', 'question', 'created_at', 'expires_at', 'options']
+
+    def create(self, validated_data):
+        options_data = validated_data.pop('options')
+        poll = Poll.objects.create(**validated_data)
+        for option_data in options_data:
+            Option.objects.create(poll=poll, **option_data)
+        return poll
